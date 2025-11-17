@@ -55,3 +55,10 @@ h2{
 #temperature{
     cursor:pointer;
 }
+
+#title{
+    font-size: 50px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}

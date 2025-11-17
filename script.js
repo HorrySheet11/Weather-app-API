@@ -11,9 +11,9 @@ const wind = document.getElementById("wind");
 
 const search = document.getElementById("search");
 const searchButton = document.getElementById("search-button");
+let weatherOBJ = {};
 let query;
-let celsius;
-let fahrenheit;
+
 
 const fetchWeather = async (query = "philippines") => {
 	try {
@@ -22,23 +22,36 @@ const fetchWeather = async (query = "philippines") => {
 		);
 		const data = await weather.json();
 		console.log(data);
-		city.textContent = data.resolvedAddress;
-		date.textContent = `Time: ${data.days[0].datetime}`;
-		time_zone.textContent = `Time zone: ${data.timezone}`;
-		temperature.textContent = `Temp: ${data.days[0].tempmax} °F`;
-		fahrenheit = data.days[0].tempmax;
-		celsius = (((data.days[0].tempmax - 32) * 5) / 9).toFixed(1);
-		feels_like.textContent = `Feels like: ${data.days[0].feelslike}`;
-		condition.textContent = `Condition: ${data.days[0].conditions}`;
-		description.textContent = data.description;
-		humidity.textContent = `Humidity: ${data.days[0].humidity}`;
-		wind.textContent = `Wind: ${data.days[0].windspeed}`;
+		weatherOBJ.address = data.resolvedAddress;
+		weatherOBJ.date = `Time: ${data.days[0].datetime}`;
+		weatherOBJ.time_zone = `Time zone: ${data.timezone}`;
+		weatherOBJ.temperature = `Temp: ${data.days[0].tempmax} °F`;
+		weatherOBJ.fahrenheit = data.days[0].tempmax;
+		weatherOBJ.celsius = (((data.days[0].tempmax - 32) * 5) / 9).toFixed(1);
+		weatherOBJ.feels_like = `Feels like: ${data.days[0].feelslike}`;
+		weatherOBJ.condition = `Condition: ${data.days[0].conditions}`;
+		weatherOBJ.description = data.description;
+		weatherOBJ.humidity = `Humidity: ${data.days[0].humidity}`;
+		weatherOBJ.wind = `Wind: ${data.days[0].windspeed}`;
+		displayWeather();
 	} catch (error) {
 		console.log(error);
 	}
 };
 
 fetchWeather();
+
+const displayWeather = () => {
+	city.textContent = weatherOBJ.address;
+	date.textContent = weatherOBJ.date;
+	time_zone.textContent = weatherOBJ.time_zone;
+	temperature.textContent = weatherOBJ.temperature;
+	feels_like.textContent = weatherOBJ.feels_like;
+	condition.textContent = weatherOBJ.condition;
+	description.textContent = weatherOBJ.description;
+	humidity.textContent = weatherOBJ.humidity;
+	wind.textContent = weatherOBJ.wind;
+};
 
 search.addEventListener("input", () => {
 	query = search.value;
@@ -52,8 +65,8 @@ temperature.addEventListener("click", () => {
 	temperature.classList.toggle("f");
 
 	if (temperature.classList.contains("c")) {
-		temperature.textContent = `Temp: ${celsius} °C`;
+		temperature.textContent = `Temp: ${weatherOBJ.celsius} °C`;
 	} else {
-		temperature.textContent = `Temp: ${fahrenheit} °F`;
+		temperature.textContent = `Temp: ${weatherOBJ.fahrenheit} °F`;
 	}
 });
